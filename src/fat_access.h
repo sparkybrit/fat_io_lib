@@ -1,6 +1,7 @@
 #ifndef __FAT_ACCESS_H__
 #define __FAT_ACCESS_H__
 
+#include <stdint.h>
 #include "fat_defs.h"
 #include "fat_opts.h"
 
@@ -21,8 +22,8 @@
 //-----------------------------------------------------------------------------
 // Function Pointers
 //-----------------------------------------------------------------------------
-typedef int (*fn_diskio_read) (uint32 sector, uint8 *buffer, uint32 sector_count);
-typedef int (*fn_diskio_write)(uint32 sector, uint8 *buffer, uint32 sector_count);
+typedef int (*fn_diskio_read) (uint32_t sector, uint8_t *buffer, uint32_t sector_count);
+typedef int (*fn_diskio_write)(uint32_t sector, uint8_t *buffer, uint32_t sector_count);
 
 //-----------------------------------------------------------------------------
 // Structures

@@ -1,0 +1,6 @@
+.vscode
+src/*.o
+src/*.elf
+src/*.lst
+obj/*.o
+

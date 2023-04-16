@@ -130,6 +130,7 @@ static int _sd_init(void)
     do
     {
         response = _sd_send_command(CMD0_GO_IDLE_STATE, 0);
+        
         if(retries++ > 8)
         {
             spi_cs(1);
