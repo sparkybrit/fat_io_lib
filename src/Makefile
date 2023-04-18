@@ -1,6 +1,9 @@
-CC     = m68k-linux-gnu-gcc
-CFLAGS = -s -g
-CFLAGS = -ffreestanding -s -g -m68030 -nostdlib -nostartfiles
+TOOLCHAIN_PREFIX = m68k-linux-gnu-
+CC     = $(TOOLCHAIN_PREFIX)gcc
+OBJDUMP = $(TOOLCHAIN_PREFIX)objdump
+NM = $(TOOLCHAIN_PREFIX)nm
+CFLAGS = -ffreestanding -s -g
+LDFLAGS = -nostdlib -nostartfiles
 OBJS	= main.o fat_access.o fat_cache.o fat_filelib.o fat_format.o fat_misc.o \
 	fat_string.o fat_table.o fat_write.o sd.o spi.o timer.o
 #DEPFLAGS      = -MT $$@ -MMD -MP -MF $(call src2dep,$(1))
@@ -8,10 +11,9 @@ OBJS	= main.o fat_access.o fat_cache.o fat_filelib.o fat_format.o fat_misc.o \
 all: main.elf
 
 main.elf: $(OBJS)
-	$(CC) -o $@ $^
-
-%.o: %.c 
-	$(CC) -c $(CFLAGS) -o $@ $^
+	$(CC) $(LDFLAGS) -o $@ $^
+	$(OBJDUMP) -S $@ >main.lst
+	$(NM) $@ | sort
 
 clean: 
-	rm $(OBJS) main.elf
+	rm *.o *.elf
