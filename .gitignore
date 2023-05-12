@@ -3,4 +3,6 @@ src/*.o
 src/*.elf
 src/*.lst
 obj/*.o
+src/*.bin
+src/*.map
 
