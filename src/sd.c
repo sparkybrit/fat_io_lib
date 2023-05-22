@@ -44,7 +44,7 @@ static uint8_t _sd_send_command(uint8_t cmd, uint32_t arg)
 {
     uint8_t response = 0xFF;
     uint8_t status;
-    t_time tStart;
+    clock_t tStart;
 
     // If non-SDHC card, use byte addressing rather than block (512) addressing
     if(_sdhc_card == 0)
@@ -202,6 +202,7 @@ static int _sd_init(void)
 //-----------------------------------------------------------------
 int sd_init(void)
 {
+    printf("sd:sd_init()\n");
     int retries = 0;
 
     // Peform SD init
@@ -222,7 +223,7 @@ int sd_readsector(uint32_t start_block, uint8_t *buffer, uint32_t sector_count)
 {
     uint8_t response;
     uint32_t ctrl;
-    t_time tStart;
+    clock_t tStart;
     int i;
 
     if (sector_count == 0)
@@ -272,7 +273,7 @@ int sd_readsector(uint32_t start_block, uint8_t *buffer, uint32_t sector_count)
 int sd_writesector(uint32_t start_block, uint8_t *buffer, uint32_t sector_count)
 {
     uint8_t response;
-    t_time tStart;
+    clock_t tStart;
     int i;
 
     while (sector_count--)

@@ -2,32 +2,32 @@
 #include <time.h>
 #include "timer.h"
 
+extern volatile clock_t milliseconds;
 
 //--------------------------------------------------------------------------
 // timer_init:
 //--------------------------------------------------------------------------
 void timer_init(void)
 {
-    printf("timer_init()\n");
+    printf("timer:timer_init()\n");
 }
 //--------------------------------------------------------------------------
 // timer_sleep:
 //--------------------------------------------------------------------------
 void timer_sleep(int timeMs)
 {
-    t_time t = timer_now();
+    clock_t timer_start = timer_now();
 
-    while (timer_diff(timer_now(), t) < timeMs)
-        ;
+    while (timer_diff(timer_now(), timer_start) < timeMs)
+    {    
+        printf("timer.c:timer_diff(%d, %d) = %d\n", timer_now(), timer_start, timer_diff(timer_now(), timer_start));
+    }
 }
+
 //--------------------------------------------------------------------------
-// timer_now: Return time now in ms
+// timer_now: Return time since boot in ms
 //--------------------------------------------------------------------------
-t_time timer_now(void)
+volatile clock_t timer_now(void)
 {
-    struct timespec spec;
-
-    clock_gettime(CLOCK_REALTIME, &spec);
-
-    return spec.tv_nsec / 1.0e6; // convert nanoseconds to milliseconds    
+    return milliseconds;
 }

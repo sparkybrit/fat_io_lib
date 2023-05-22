@@ -1,0 +1,13 @@
+fat-io-lib.c:main:sleeping for 10s
+timer.c:timer_sleep(10000)
+timer.c:timer_sleep():timer_diff(276959, 1394322720) = -1394045761
+timer.c:timer_sleep():timer_diff(263176, 1394322720) = -1394059544
+timer.c:timer_sleep():timer_diff(263206, 1394322720) = -1394059514
+timer.c:timer_sleep():timer_diff(263236, 1394322720) = -1394059484
+timer.c:timer_sleep():timer_diff(263266, 1394322720) = -1394059454
+timer.c:timer_sleep():timer_diff(263296, 1394322720) = -1394059424
+timer.c:timer_sleep():timer_diff(263326, 1394322720) = -1394059394
+timer.c:timer_sleep():timer_diff(263356, 1394322720) = -1394059364
+timer.c:timer_sleep():timer_diff(263386, 1394322720) = -1394059334
+timer.c:timer_sleep():timer_diff(263426, 1394322720) = -1394059294
+timer.c:timer_sleep():timer_diff(263456, 1394322720) = -1394059264

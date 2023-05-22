@@ -1,17 +1,40 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "spi.h"
 #include "sd.h"
+#include "timer.h"
 #include "fat_filelib.h"
+
+extern void uart_init(void);
+extern void cpu_enable_interrupts(void);
+extern volatile clock_t milliseconds;
 
 //-----------------------------------------------------------------
 // main
 //-----------------------------------------------------------------
-int main(int argc, char *argv[])
+int main()
 {
+    uart_init();
+
+    cpu_enable_interrupts();
+
     // Initialise SPI interface
     spi_init();
+
+    printf("fat-io-lib.c:main:CLOCKS_PER_SEC = %d\n", CLOCKS_PER_SEC);
+
+    for (int i=0; i < 20; i++)
+    {
+        printf("fat-io-lib.c:main:milliseconds = %d\n", milliseconds);
+        printf("fat-io-lib.c:main:timer_now() = %d\n", timer_now());
+    }
+    
+    printf("fat-io-lib.c:main:sleeping for 10s\n");
+
+    timer_sleep(10000);
+    printf("fat-io-lib.c:main:milliseconds = %d\n", milliseconds);
 
     // Initialise SD interface
     if (sd_init() < 0)
