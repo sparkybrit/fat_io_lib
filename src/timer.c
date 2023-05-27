@@ -9,8 +9,8 @@ extern volatile clock_t milliseconds;
 //--------------------------------------------------------------------------
 void timer_init(void)
 {
-    printf("timer:timer_init()\n");
 }
+
 //--------------------------------------------------------------------------
 // timer_sleep:
 //--------------------------------------------------------------------------
@@ -20,7 +20,6 @@ void timer_sleep(int timeMs)
 
     while (timer_diff(timer_now(), timer_start) < timeMs)
     {    
-        printf("timer.c:timer_diff(%d, %d) = %d\n", timer_now(), timer_start, timer_diff(timer_now(), timer_start));
     }
 }
 

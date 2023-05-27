@@ -202,7 +202,6 @@ static int _sd_init(void)
 //-----------------------------------------------------------------
 int sd_init(void)
 {
-    printf("sd:sd_init()\n");
     int retries = 0;
 
     // Peform SD init

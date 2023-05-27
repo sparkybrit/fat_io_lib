@@ -327,6 +327,10 @@ static FL_FILE* _open_file(const char *path)
     FL_FILE* file;
     struct fat_dir_entry sfEntry;
 
+#ifdef DEBUG
+    printf("fat_filelib.c:_open_file(%s)\r\n", path);
+#endif
+
     // Allocate a new file handle
     file = _allocate_file();
     if (!file)
@@ -343,6 +347,10 @@ static FL_FILE* _open_file(const char *path)
         return NULL;
     }
 
+#ifdef DEBUG
+    printf("fat_filelib.c:_open_file(), file->path=%s, file->filename=%s\r\n", file->path, file->filename);
+#endif
+
     // Check if file already open
     if (_check_file_open(file))
     {
@@ -352,9 +360,17 @@ static FL_FILE* _open_file(const char *path)
 
     // If file is in the root dir
     if (file->path[0]==0)
+    {
         file->parentcluster = fatfs_get_root_cluster(&_fs);
+#ifdef DEBUG
+        printf("fat_filelib.c:_open_file() file in root file cluster\r\n");
+#endif    
+    }    
     else
     {
+#ifdef DEBUG
+        printf("fat_filelib.c:_open_file() file NOT in root file cluster\r\n");
+#endif 
         // Find parent directory start cluster
         if (!_open_directory(file->path, &file->parentcluster))
         {
@@ -364,7 +380,7 @@ static FL_FILE* _open_file(const char *path)
     }
 
     // Using dir cluster address search for filename
-    if (fatfs_get_file_entry(&_fs, file->parentcluster, file->filename,&sfEntry))
+    if (fatfs_get_file_entry(&_fs, file->parentcluster, file->filename, &sfEntry))
         // Make sure entry is file not dir!
         if (fatfs_entry_is_file(&sfEntry))
         {
@@ -703,6 +719,10 @@ void* fl_fopen(const char *path, const char *mode)
     if (!path || !mode)
         return NULL;
 
+#ifdef DEBUG
+    printf("fat_filelib.c:fl_fopen(%s, %s)\r\n", path, mode);
+#endif
+
     // Supported Modes:
     // "r" Open a file for reading.
     //        The file must exist.
@@ -1033,6 +1053,9 @@ int fl_fread(void * buffer, int size, int length, void *f )
     if (!count)
         return 0;
 
+#ifdef DEBUG
+    printf("fat_filelib.c:fl_fread(): file->bytenum=%d, file->filelength=%d, count=%d\r\n", file->bytenum, file->filelength, count);
+#endif
     // Check if read starts past end of file
     if (file->bytenum >= file->filelength)
         return -1;
@@ -1049,11 +1072,15 @@ int fl_fread(void * buffer, int size, int length, void *f )
 
     while (bytesRead < count)
     {
+#ifdef DEBUG
+        printf("fat_filelib.c:fl_fread(): bytesRead=%d, count=%d\r\n", bytesRead, count);
+#endif
         // Read whole sector, read from media directly into target buffer
         if ((offset == 0) && ((count - bytesRead) >= FAT_SECTOR_SIZE))
         {
             // Read as many sectors as possible into target buffer
             uint32 sectorsRead = _read_sectors(file, sector, (uint8*)((uint8*)buffer + bytesRead), (count - bytesRead) / FAT_SECTOR_SIZE);
+            
             if (sectorsRead)
             {
                 // We have upto one sector to copy
@@ -1099,6 +1126,9 @@ int fl_fread(void * buffer, int size, int length, void *f )
             offset = 0;
         }
 
+#ifdef DEBUG
+        printf("fat_filelib.c:fl_read(): copyCount=%d\r\n", copyCount);
+#endif
         // Increase total read count
         bytesRead += copyCount;
 
@@ -1108,6 +1138,8 @@ int fl_fread(void * buffer, int size, int length, void *f )
 
     return bytesRead;
 }
+
+
 //-----------------------------------------------------------------------------
 // fl_fseek: Seek to a specific place in the file
 //-----------------------------------------------------------------------------
@@ -1498,6 +1530,9 @@ void fl_listdirectory(const char *path)
             }
         }
 
+#ifdef DEBUG
+        printf("fat_filelib.c:fl_listdirectory()\r\n");
+#endif
         fl_closedir(&dirstat);
     }
 
@@ -1551,6 +1586,9 @@ int fl_readdir(FL_DIR *dirls, fl_dirent *entry)
 
     res = fatfs_list_directory_next(&_fs, dirls, entry);
 
+#ifdef DEBUG
+    printf("fat_filelib.c:fl_readdir() entry->filename=%s, res=%d\r\n", entry->filename, res);
+#endif
     FL_UNLOCK(&_fs);
 
     return res ? 0 : -1;

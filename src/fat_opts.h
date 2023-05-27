@@ -1,6 +1,8 @@
 #ifndef __FAT_OPTS_H__
 #define __FAT_OPTS_H__
 
+#define DEBUG
+
 #ifdef FATFS_USE_CUSTOM_OPTS_FILE
     #include "fat_custom.h"
 #endif

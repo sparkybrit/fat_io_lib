@@ -416,6 +416,9 @@ uint32 fatfs_get_file_entry(struct fatfs *fs, uint32 Cluster, char *name_to_find
     int dotRequired = 0;
     struct fat_dir_entry *directoryEntry;
 
+#ifdef DEBUG
+    printf("fat_access.c:fatfs_get_file_entry()\r\n");
+#endif
     fatfs_lfn_cache_init(&lfn, 1);
 
     // Main cluster following loop
@@ -501,6 +504,10 @@ uint32 fatfs_get_file_entry(struct fatfs *fs, uint32 Cluster, char *name_to_find
         }
         else
             break;
+
+#ifdef DEBUG
+        printf("fat_access.c:fatfs_get_file_entry(): directoryEntry->Name=%s\r\n", directoryEntry->Name);
+#endif
     } // End of while loop
 
     return 0;
